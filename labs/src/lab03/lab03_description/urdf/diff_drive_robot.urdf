@@ -47,7 +47,7 @@
     </joint>
     
     
-    <link name="front_roller">
+    <link name="front_glider">
         <visual>
             <geometry>
                 <sphere radius="0.1" />
@@ -55,14 +55,14 @@
             <material name="black"/>
         </visual>
     </link>
-    <joint name="front_roller_joint" type="fixed">
+    <joint name="front_glider_joint" type="fixed">
         <parent link="base_link"/>
-        <child link="front_roller"/>
+        <child link="front_glider"/>
         <origin xyz="0 0.5 -0.09"/>
     </joint>
     
     
-    <link name="back_roller">
+    <link name="back_glider">
         <visual>
             <geometry>
                 <sphere radius="0.1" />
@@ -70,9 +70,9 @@
             <material name="black"/>
         </visual>
     </link>
-    <joint name="back_roller_joint" type="fixed">
+    <joint name="back_glider_joint" type="fixed">
         <parent link="base_link"/>
-        <child link="back_roller"/>
+        <child link="back_glider"/>
         <origin xyz="0 -0.5 -0.09"/>
     </joint>
     

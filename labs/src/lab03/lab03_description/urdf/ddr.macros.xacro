@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="diff_drive_robot">
+    
+    
+    <!--Include Files-->
+    <xacro:include filename="$(find lab03_description)/urdf/ddr.parameters.xacro" />
+    
+    <!--
+        Macro for creating cylinder inertial
+            mass
+            radius
+            length
+    -->
+    
+    <xacro:macro name="cylinder_inertial" params="mass radius length">
+        <inertial>
+            <mass value="${mass}" />
+            <inertia
+                ixx="0"
+                ixy="0"
+                ixz="0"
+                iyy="0"
+                iyz="0"
+                izz="0"
+                />
+        </inertial>
+    </xacro:macro>
+    
+    
+    <!--Chassis Macros-->
+    <xacro:macro name="chassis_geometry">
+        <geometry>
+            <cylinder length="${chassis_height}" radius="${chassis_radius}" />
+        </geometry>
+    </xacro:macro>
+    
+    
+    <!--Wheel Macro-->
+    <xacro:macro name="wheel" params="name rl_reflection">
+        <link name="${name}">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 1.571 0" />
+                <geometry>
+                    <cylinder length="${wheel_width}" radius="${wheel_radius}" />
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <sphere radius="${wheel_radius}" />
+                </geometry>
+            </collision>
+            <xacro:cylinder_inertial mass="${wheel_mass}"
+                                     radius="${wheel_radius}"
+                                     length="${wheel_width}"
+                                     />
+        </link>
+        <joint name="${name}_joint" type="continuous">
+            <parent link="robot_chassis"/>
+            <child link="${name}"/>
+            <origin xyz="${rl_reflection * chassis_radius * 0.75} 0 ${wheel_radius * -0.33}"/>
+            <axis xyz="1 0 0"/>
+        </joint>
+    </xacro:macro>
+    
+    
+    <!--Glider Macro-->
+    <xacro:macro name="glider" params="name fb_reflection">
+        <link name="${name}">
+            <visual>
+                <geometry>
+                    <sphere radius="${glider_radius}" />
+                </geometry>
+                <material name="black"/>
+            </visual>
+        </link>
+        <joint name="${name}_joint" type="fixed">
+            <parent link="robot_chassis"/>
+            <child link="${name}"/>
+            <origin xyz="0 ${fb_reflection * 0.5} -0.09"/>
+        </joint>
+    </xacro:macro>
+    
+    
+    
+</robot>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="diff_drive_robot">
+    
+    <!--
+        Command line args
+    -->
+    <xacro:arg name="chassis_radius"    default="0" />
+    <xacro:arg name="chassis_height"    default="0" />
+    <xacro:arg name="wheel_radius"      default="0" />
+    <xacro:arg name="glider_radius"     default="0" />
+    
+    
+    <!--
+        Properties
+    -->
+    <!--Robot vertical offset-->
+    <xacro:property name="vertical_offset" value="${wheel_radius * 1.1}" />
+    
+    <!--Chassis properties-->
+    <xacro:property name="chassis_density" value="500.0" />
+    <xacro:property name="chassis_radius" value="$(arg chassis_radius)" />
+    <xacro:property name="chassis_height" value="$(arg chassis_height)" />
+    <xacro:property name="chassis_mass" value="${chassis_density * pi * chassis_radius**2 * chassis_height}" />
+    
+    <!--Wheel properties-->
+    <xacro:property name="wheel_density" value="800.0" />
+    <xacro:property name="wheel_radius" value="$(arg wheel_radius)" />
+    <xacro:property name="wheel_width" value="${$(arg wheel_radius) * .5}" />
+    <xacro:property name="wheel_mass" value="${wheel_density * pi * wheel_radius**2 * wheel_width}" />
+    
+    <!--Glider properties-->
+    <xacro:property name="glider_density" value="200.0" />
+    <xacro:property name="glider_radius" value="$(arg glider_radius)" />
+    <xacro:property name="glider_mass" value="${glider_density * (4.0 / 3.0) * pi * glider_radius**3" />
+    
+</robot>

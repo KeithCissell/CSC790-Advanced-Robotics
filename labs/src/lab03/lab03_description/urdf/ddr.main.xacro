@@ -4,25 +4,20 @@
     
     <!--Include Files-->
     <xacro:include filename="$(find lab03_description)/urdf/ddr.parameters.xacro" />
-    <xacro:include filename="$(find lab03_description)/urdf/ddr.macros.xacro" />
     <xacro:include filename="$(find lab03_description)/urdf/ddr.materials.xacro" />
+    <xacro:include filename="$(find lab03_description)/urdf/ddr.gazebo.xacro" />
+    <xacro:include filename="$(find lab03_description)/urdf/ddr.macros.xacro" />
     
-    <!--                Arguments
-        <xacro:arg name="chassis_radius" default="0" />
-        <xacro:arg name="chassis_height" default="0" />
-        <xacro:arg name="wheel_radius"   default="0" />
-        <xacro:arg name="glider_radius"  default="0" />
+    <!--
+        Build the robot!
     -->
-    
-    <!--    -->
-    <!--Build the robot!-->
-    <!--    -->
     
     <!--Base Link-->
     <link name="base_link" />
     
     <!--Create the chassis and add it to the base link-->
-    <link name="robot_chassis">
+    <xacro:gz_white_material name="${chassis_name}" />
+    <link name="${chassis_name}">
         <visual>
             <xacro:chassis_geometry />
             <material name="white" />
@@ -37,7 +32,7 @@
     </link>
     <joint name="robot_chassis_joint" type="fixed">
         <parent link="base_link"/>
-        <child link="robot_chassis"/>
+        <child link="${chassis_name}"/>
         <origin xyz="0 0 ${wheel_radius * 1.33 + 0.01}"/>
     </joint>
     
@@ -45,9 +40,12 @@
     <xacro:wheel name="right_wheel" rl_reflection="1" />
     <xacro:wheel name="left_wheel"  rl_reflection="-1" />
     
-    Add Gliders
+    <!--Add Gliders-->
     <xacro:glider name="front_glider" fb_reflection="1" />
     <xacro:glider name="back_glider" fb_reflection="-1" />
+    
+    <!--Add Camera-->
+    <xacro:camera name="${camera_name}" />
 
     
 </robot>

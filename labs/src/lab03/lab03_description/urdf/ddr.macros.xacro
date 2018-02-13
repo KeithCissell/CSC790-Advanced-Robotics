@@ -1,27 +1,54 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="diff_drive_robot">
     
-    
-    <!--Include Files-->
-    <xacro:include filename="$(find lab03_description)/urdf/ddr.parameters.xacro" />
-    
+        
     <!--
         Macro for creating cylinder inertial
-            mass
-            radius
-            length
     -->
-    
     <xacro:macro name="cylinder_inertial" params="mass radius length">
         <inertial>
             <mass value="${mass}" />
             <inertia
-                ixx="0"
+                ixx="${(1.0 / 12.0) * (3.0 * radius**2 + length**2) * mass}"
+                iyy="${(1.0 / 12.0) * (3.0 * radius**2 + length**2) * mass}"
+                izz="${(1.0 / 12.0) * radius**2 * mass}"
                 ixy="0"
                 ixz="0"
-                iyy="0"
                 iyz="0"
-                izz="0"
+                />
+        </inertial>
+    </xacro:macro>
+    
+    <!--
+        Macro for creating sphere inertial
+    -->
+    <xacro:macro name="sphere_inertial" params="mass radius">
+        <inertial>
+            <mass value="${mass}" />
+            <inertia
+                ixx="${(2.0 / 5.0) * radius**2 * mass}"
+                iyy="${(2.0 / 5.0) * radius**2 * mass}"
+                izz="${(2.0 / 5.0) * radius**2 * mass}"
+                ixy="0"
+                ixz="0"
+                iyz="0"
+                />
+        </inertial>
+    </xacro:macro>
+    
+    <!--
+        Macro for creating cube inertial
+    -->
+    <xacro:macro name="cube_inertial" params="mass x y z">
+        <inertial>
+            <mass value="${mass}" />
+            <inertia
+                ixx="${(1.0 / 12.0) * (y**2 + z**2) * mass}"
+                iyy="${(1.0 / 12.0) * (x**2 + z**2) * mass}"
+                izz="${(1.0 / 12.0) * (y**2 + x**2) * mass}"
+                ixy="0"
+                ixz="0"
+                iyz="0"
                 />
         </inertial>
     </xacro:macro>
@@ -37,6 +64,7 @@
     
     <!--Wheel Macro-->
     <xacro:macro name="wheel" params="name rl_reflection">
+        <xacro:gz_black_material name="${name}" />v
         <link name="${name}">
             <visual>
                 <origin xyz="0 0 0" rpy="0 1.571 0" />
@@ -56,7 +84,7 @@
                                      />
         </link>
         <joint name="${name}_joint" type="continuous">
-            <parent link="robot_chassis"/>
+            <parent link="${chassis_name}"/>
             <child link="${name}"/>
             <origin xyz="${rl_reflection * chassis_radius * 0.75} 0 ${wheel_radius * -0.33}"/>
             <axis xyz="1 0 0"/>
@@ -66,6 +94,7 @@
     
     <!--Glider Macro-->
     <xacro:macro name="glider" params="name fb_reflection">
+        <xacro:gz_black_material name="${name}" />
         <link name="${name}">
             <visual>
                 <geometry>
@@ -73,14 +102,49 @@
                 </geometry>
                 <material name="black"/>
             </visual>
+            <collision>
+                <geometry>
+                    <sphere radius="${glider_radius}" />
+                </geometry>
+            </collision>
+            <xacro:sphere_inertial mass="${glider_mass}"
+                                   radius="${glider_radius}"
+                                   />
         </link>
         <joint name="${name}_joint" type="fixed">
-            <parent link="robot_chassis"/>
+            <parent link="${chassis_name}"/>
             <child link="${name}"/>
             <origin xyz="0 ${fb_reflection * 0.5} -0.09"/>
         </joint>
     </xacro:macro>
     
+    <!--Camera Macro-->
+    <xacro:macro name="camera" params="name">
+        <xacro:gz_red_material name="${name}" />
+        <link name="${name}">
+            <visual>
+                <geometry>
+                    <box size="${camera_length} ${camera_width} ${camera_height}" />
+                </geometry>
+                <material name="red"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${camera_length} ${camera_width} ${camera_height}" />
+                </geometry>
+            </collision>
+            <xacro:cube_inertial mass="${camera_mass}"
+                                 x="${camera_length}"
+                                 y="${camera_width}"
+                                 z="${camera_height}"
+                                 />
+        </link>
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${chassis_name}"/>
+            <child link="${name}"/>
+            <origin xyz="0 ${chassis_radius} ${(chassis_height / 2.0) + (camera_height / 2.0)}" />
+        </joint>
+    </xacro:macro>
     
     
 </robot>

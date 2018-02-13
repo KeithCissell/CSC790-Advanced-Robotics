@@ -17,6 +17,7 @@
     <xacro:property name="vertical_offset" value="${wheel_radius * 1.1}" />
     
     <!--Chassis properties-->
+    <xacro:property name="chassis_name" value="ddr_chassis" />
     <xacro:property name="chassis_density" value="500.0" />
     <xacro:property name="chassis_radius" value="$(arg chassis_radius)" />
     <xacro:property name="chassis_height" value="$(arg chassis_height)" />
@@ -31,6 +32,14 @@
     <!--Glider properties-->
     <xacro:property name="glider_density" value="200.0" />
     <xacro:property name="glider_radius" value="$(arg glider_radius)" />
-    <xacro:property name="glider_mass" value="${glider_density * (4.0 / 3.0) * pi * glider_radius**3" />
+    <xacro:property name="glider_mass" value="${glider_density * (4.0 / 3.0) * pi * glider_radius**3}" />
+    
+    <!--Camera properties-->
+    <xacro:property name="camera_name" value="rgba_camera" />
+    <xacro:property name="camera_density" value="100.0" />
+    <xacro:property name="camera_length" value="0.2" />
+    <xacro:property name="camera_width" value="0.1" />
+    <xacro:property name="camera_height" value="0.2" />
+    <xacro:property name="camera_mass" value="${camera_density * camera_length * camera_width * camera_height}" />
     
 </robot>

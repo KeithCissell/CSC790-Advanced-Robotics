@@ -64,7 +64,7 @@
     
     <!--Wheel Macro-->
     <xacro:macro name="wheel" params="name rl_reflection">
-        <xacro:gz_black_material name="${name}" />v
+        <xacro:gz_black_material name="${name}" />
         <link name="${name}">
             <visual>
                 <origin xyz="0 0 0" rpy="0 1.571 0" />
@@ -86,7 +86,7 @@
         <joint name="${name}_joint" type="continuous">
             <parent link="${chassis_name}"/>
             <child link="${name}"/>
-            <origin xyz="${rl_reflection * chassis_radius * 0.75} 0 ${wheel_radius * -0.33}"/>
+            <origin xyz="${rl_reflection * chassis_radius * 0.75} 0 ${wheel_radius * -0.0}"/>
             <axis xyz="1 0 0"/>
         </joint>
     </xacro:macro>
@@ -118,6 +118,7 @@
         </joint>
     </xacro:macro>
     
+    
     <!--Camera Macro-->
     <xacro:macro name="camera" params="name">
         <xacro:gz_red_material name="${name}" />
@@ -134,15 +135,15 @@
                 </geometry>
             </collision>
             <xacro:cube_inertial mass="${camera_mass}"
-                                 x="${camera_length}"
-                                 y="${camera_width}"
+                                 x="${camera_width}"
+                                 y="${camera_length}"
                                  z="${camera_height}"
                                  />
         </link>
         <joint name="${name}_joint" type="fixed">
             <parent link="${chassis_name}"/>
             <child link="${name}"/>
-            <origin xyz="0 ${chassis_radius} ${(chassis_height / 2.0) + (camera_height / 2.0)}" />
+            <origin xyz="0 ${chassis_radius - camera_length} ${(chassis_height / 2.0) + (camera_height / 2.0)}" rpy="0 0 1.571"/>
         </joint>
     </xacro:macro>
     

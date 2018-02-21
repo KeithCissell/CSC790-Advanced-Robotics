@@ -37,9 +37,11 @@
     <!--Camera properties-->
     <xacro:property name="camera_name" value="rgba_camera" />
     <xacro:property name="camera_density" value="100.0" />
-    <xacro:property name="camera_length" value="0.2" />
-    <xacro:property name="camera_width" value="0.1" />
+    <xacro:property name="camera_length" value="0.1" />
+    <xacro:property name="camera_width" value="0.2" />
     <xacro:property name="camera_height" value="0.2" />
     <xacro:property name="camera_mass" value="${camera_density * camera_length * camera_width * camera_height}" />
+    
+    <!--Differential Drive properties-->
     
 </robot>

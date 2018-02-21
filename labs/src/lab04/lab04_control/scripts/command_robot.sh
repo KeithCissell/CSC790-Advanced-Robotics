@@ -2,14 +2,14 @@
 
 # First program argument is an x-axis linear speed
 
-LIN_SPEED="0.1"
+LIN_SPEED="0.5"
 if [ ! -z "$1" ]; then
     LIN_SPEED=$1
 fi
 
 # Second program argument is an z-axis angular speed
 
-ANG_SPEED="0.0"
+ANG_SPEED="0.5"
 if [ ! -z "$2" ]; then
     ANG_SPEED=$2
 fi

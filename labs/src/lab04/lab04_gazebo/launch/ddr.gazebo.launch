@@ -33,6 +33,7 @@
     <!-- Start with the empty_world.launch file -->
     <!--  -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name"   value="$(find lab04_gazebo)/worlds/ddr.cones.world"/>
         <arg name="paused"       value="$(arg paused)"       />
         <arg name="use_sim_time" value="$(arg use_sim_time)" />
         <arg name="gui"          value="$(arg gui)"          />
@@ -40,7 +41,7 @@
         <arg name="debug"        value="$(arg debug)"        />
         <arg name="verbose"      value="$(arg verbose)"      />
     </include>
-
+    
     <!-- Spawn a robot into Gazebo from the ROS Parameter Server -->
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
           args="-param ddr_description -urdf -model ddr" />

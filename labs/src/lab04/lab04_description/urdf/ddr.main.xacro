@@ -3,10 +3,10 @@
     
     
     <!--Include Files-->
-    <xacro:include filename="$(find lab03_description)/urdf/ddr.parameters.xacro" />
-    <xacro:include filename="$(find lab03_description)/urdf/ddr.materials.xacro" />
-    <xacro:include filename="$(find lab03_description)/urdf/ddr.gazebo.xacro" />
-    <xacro:include filename="$(find lab03_description)/urdf/ddr.macros.xacro" />
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.parameters.xacro" />
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.materials.xacro" />
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.gazebo.xacro" />
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.macros.xacro" />
     
     <!--
         Build the robot!

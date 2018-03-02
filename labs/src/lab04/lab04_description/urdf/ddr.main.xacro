@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="diff_drive_robot">
+    
+    
+    <!--Include Files-->
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.parameters.xacro" />
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.materials.xacro" />
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.gazebo.xacro" />
+    <xacro:include filename="$(find lab04_description)/urdf/ddr.macros.xacro" />
+    
+    <!--
+        Build the robot!
+    -->
+    
+    <!--Base Link-->
+    <link name="base_link" />
+    
+    <!--Create the chassis and add it to the base link-->
+    <xacro:gz_white_material name="${chassis_name}" />
+    <link name="${chassis_name}">
+        <visual>
+            <xacro:chassis_geometry />
+            <material name="white" />
+        </visual>
+        <collision>
+            <xacro:chassis_geometry />
+        </collision>
+        <xacro:cylinder_inertial mass="${chassis_mass}"
+                                 radius="${chassis_radius}"
+                                 length="${chassis_height}"
+                                 />
+    </link>
+    <joint name="robot_chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="${chassis_name}"/>
+        <origin xyz="0 0 ${wheel_radius * 1.33 + 0.01}"/>
+    </joint>
+    
+    <!--Add Wheels-->
+    <xacro:wheel name="right_wheel" rl_reflection="1" />
+    <xacro:wheel name="left_wheel"  rl_reflection="-1" />
+    
+    <!--Add Gliders-->
+    <xacro:glider name="front_glider" fb_reflection="1" />
+    <xacro:glider name="back_glider" fb_reflection="-1" />
+    
+    <!--Add Camera-->
+    <xacro:camera name="${camera_name}" />
+
+    
+</robot>

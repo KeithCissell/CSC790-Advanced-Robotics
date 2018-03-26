@@ -11,49 +11,60 @@ import cv2
 from cv_bridge import CvBridge
 
 
-
 IMAGE_WIDTH = 640
 FIELD_OF_VIEW = 1.396234
 angle_to_barrel_rads = 100
 
 
-
 def camera_callback(ros_image):
   """
-  std_msgs/Header header
-      uint32 seq
-      time stamp
-      string frame_id
-  uint32 height
-  uint32 width
-  string encoding
-  uint8 is_bigendian
-  uint32 step
-  uint8[] data
+  Detect barrel features.
+
+  rosmsg show sensor_msgs/Image
+      std_msgs/Header header
+        uint32 seq
+        time stamp
+        string frame_id
+      uint32 height
+      uint32 width
+      string encoding
+      uint8 is_bigendian
+      uint32 step
+      uint8[] data
+
+  For /lab05/camera1/image_raw
+      height       = 480
+      width        = 640
+      encoding     = rgb8
+      is_bigendian = false
+      step         = 1920 (width * 3 = 640 * 3)
+      data         = length is 921600 (step * height = 1920 * 480)
   """
 
   cam_image = image_converter.imgmsg_to_cv2(ros_image, 'bgr8')
   cam_keypoints, cam_descriptors = sift.detectAndCompute(cam_image, mask)
 
-  matches = bf_matcher.knnMatch(bar_descriptors, cam_descriptors, k=2)
+  if len(cam_keypoints) > 0:
 
-  good_matches = [[m] for m, n in matches if m.distance < 0.8 * n.distance]
+    matches = bf_matcher.knnMatch(bar_descriptors, cam_descriptors, k=2)
 
-  global angle_to_barrel_rads
+    good_matches = [[m] for m, n in matches if m.distance < 0.7 * n.distance]
 
-  num_matches = len(good_matches)
-  if num_matches > 0:
-    barrel_x_location = 0
-    for match in good_matches:
-      keypoint_index = match[0].trainIdx
-      keypoint_x_location = cam_keypoints[keypoint_index].pt[0]
-      barrel_x_location += keypoint_x_location
-    barrel_x_location /= num_matches
-    barrel_x_normalized = barrel_x_location / IMAGE_WIDTH
+    global angle_to_barrel_rads
 
-    angle_to_barrel_rads = -(barrel_x_normalized - 0.5) * FIELD_OF_VIEW
-  else:
-    angle_to_barrel_rads = 100
+    num_matches = len(good_matches)
+    if num_matches > 0:
+      barrel_x_location = 0
+      for match in good_matches:
+        keypoint_index = match[0].trainIdx
+        keypoint_x_location = cam_keypoints[keypoint_index].pt[0]
+        barrel_x_location += keypoint_x_location
+      barrel_x_location /= num_matches
+      barrel_x_normalized = barrel_x_location / IMAGE_WIDTH
+
+      angle_to_barrel_rads = -(barrel_x_normalized - 0.5) * FIELD_OF_VIEW
+    else:
+      angle_to_barrel_rads = 100
 
 
 def run_bob():

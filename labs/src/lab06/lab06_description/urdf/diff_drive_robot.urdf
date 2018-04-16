@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot name="diff_drive_robot">
+    
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.2" radius="0.6"/>
+            </geometry>
+        </visual>
+    </link>
+    
+    
+    <link name="right_wheel">
+        <visual>
+            <geometry>
+                <sphere radius="0.2"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_wheel"/>
+        <origin xyz="0.35 0 -0.1"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+    
+    
+    <link name="left_wheel">
+        <visual>
+            <geometry>
+                <sphere radius="0.2"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_wheel"/>
+        <origin xyz="-0.35 0 -0.1"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+    
+    
+    <link name="front_glider">
+        <visual>
+            <geometry>
+                <sphere radius="0.1" />
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+    <joint name="front_glider_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="front_glider"/>
+        <origin xyz="0 0.5 -0.09"/>
+    </joint>
+    
+    
+    <link name="back_glider">
+        <visual>
+            <geometry>
+                <sphere radius="0.1" />
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+    <joint name="back_glider_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="back_glider"/>
+        <origin xyz="0 -0.5 -0.09"/>
+    </joint>
+    
+</robot>

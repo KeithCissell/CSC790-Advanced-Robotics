@@ -2,7 +2,7 @@
 
 # First program argument is an x-axis linear speed
 
-LIN_SPEED="0.5"
+LIN_SPEED="0.0"
 if [ ! -z "$1" ]; then
     LIN_SPEED=$1
 fi
